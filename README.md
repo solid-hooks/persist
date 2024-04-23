@@ -85,14 +85,13 @@ export type PersistSignalOptions<T> = Pick<PersistStoreOptions<any>, 'storage' |
 
 ### IndexedDB
 
-use IndexedDB storage with `idb-keyval`
+use IndexedDB storage with `idb-keyval` (as peerDependencies)
 
 ```ts
 import { createIdbStorage, usePersist } from '@solid-hooks/persist'
 import { createSignal } from 'solid-js'
-import { del, get, set } from 'idb-keyval'
 
-const idbStorage = createIdbStorage(get, set, del, 'custom-store-name')
+const idbStorage = createIdbStorage('custom-store-name')
 const [time, setTime] = usePersist(createSignal(Date.now()), 'time', {
   storage: idbStorage,
 }),

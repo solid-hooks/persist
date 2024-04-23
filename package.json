@@ -43,11 +43,6 @@
     "idb-keyval": "^6.2.1",
     "solid-js": "^1.6"
   },
-  "peerDependenciesMeta": {
-    "idb-keyval": {
-      "optional": true
-    }
-  },
   "dependencies": {
     "object-path-access": "^4.0.0"
   },

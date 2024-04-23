@@ -46,9 +46,10 @@ export function createSetterWithInit(
     DEV && console.debug(serialized)
     if (old !== serialized) {
       sync?.[1](key, serialized)
-      maybePromise(storage.setItem(key, serialized), () => {
-        unchanged && unchanged--
-      })
+      maybePromise(
+        storage.setItem(key, serialized),
+        () => unchanged && unchanged--,
+      )
     }
   })
 }

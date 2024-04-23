@@ -1,4 +1,4 @@
-import { createStore, type del as idbDel, type get as idbGet, type set as idbSet } from 'idb-keyval'
+import { createStore, del, get, set } from 'idb-keyval'
 import type { AsyncStorageLike } from './types'
 
 /**
@@ -11,9 +11,8 @@ import type { AsyncStorageLike } from './types'
  * ```ts
  * import { createIdbStorage, usePersist } from '@solid-hooks/persist'
  * import { createSignal } from 'solid-js'
- * import { del, get, set } from 'idb-keyval'
  *
- * const idbStorage = createIdbStorage(get, set, del, 'custom-store-name')
+ * const idbStorage = createIdbStorage('custom-store-name')
  * const [time, setTime] = usePersist(createSignal(Date.now()), 'time', {
  *   storage: idbStorage,
  *   // ...
@@ -21,12 +20,7 @@ import type { AsyncStorageLike } from './types'
  * ```
  */
 
-export function createIdbStorage(
-  get: typeof idbGet,
-  set: typeof idbSet,
-  del: typeof idbDel,
-  name = 'solid-idb',
-): AsyncStorageLike {
+export function createIdbStorage(name = 'solid-idb'): AsyncStorageLike {
   const customStore = createStore(name, `${name}-store`)
   return {
     getItem: key => get(key, customStore) as any,
