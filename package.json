@@ -1,0 +1,69 @@
+{
+  "name": "@solid-hooks/persist",
+  "type": "module",
+  "version": "0.0.1",
+  "description": "persist signal or store to storage for solid-js",
+  "author": "subframe7536",
+  "license": "MIT",
+  "repository": "https://github.com/solid-hooks/storage",
+  "bugs": "https://github.com/solid-hooks/storage/issues",
+  "keywords": [
+    "typescript"
+  ],
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    }
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.cjs",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "lint": "tsc --noEmit && eslint . --max-warnings 0 --fix",
+    "dev": "bunx vite serve playground",
+    "format": "eslint . --fix",
+    "build": "tsup",
+    "release": "bun run lint && bun run test && bun run build && bumpp --all && npm publish",
+    "test": "bunx vitest --run"
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "peerDependencies": {
+    "idb-keyval": "^6.2.1",
+    "solid-js": "^1.6"
+  },
+  "peerDependenciesMeta": {
+    "idb-keyval": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "object-path-access": "^4.0.0"
+  },
+  "devDependencies": {
+    "@subframe7536/eslint-config": "^0.6.1",
+    "@subframe7536/type-utils": "^0.1.6",
+    "@types/node": "^20.12.5",
+    "bumpp": "^9.4.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-solid": "^0.13.2",
+    "idb-keyval": "^6.2.1",
+    "jsdom": "^24.0.0",
+    "solid-js": "^1.8.16",
+    "tsup": "^8.0.2",
+    "typescript": "^5.4.4",
+    "vite-plugin-solid": "^2.10.2",
+    "vitest": "^1.4.0"
+  }
+}
