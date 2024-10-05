@@ -1,11 +1,8 @@
-import { createStore, del, get, set } from 'idb-keyval'
 import type { AsyncStorageLike } from './types'
+import { createStore, del, get, set } from 'idb-keyval'
 
 /**
  * use IndexedDB storage with `idb-keyval`
- * @param get `idb-keyval` get
- * @param set `idb-keyval` set
- * @param del `idb-keyval` del
  * @param name `idb-keyval` CustomStore db name, default to `solid-idb`
  * @example
  * ```ts
@@ -19,7 +16,6 @@ import type { AsyncStorageLike } from './types'
  * }),
  * ```
  */
-
 export function createIdbStorage(name = 'solid-idb'): AsyncStorageLike {
   const customStore = createStore(name, `${name}-store`)
   return {

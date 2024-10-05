@@ -1,6 +1,6 @@
-import { describe, expect, it } from 'vitest'
-import { createStore, reconcile } from 'solid-js/store'
 import { createSignal } from 'solid-js'
+import { createStore, reconcile } from 'solid-js/store'
+import { describe, expect, it } from 'vitest'
 import { usePersist } from '../src'
 
 describe('test state', () => {

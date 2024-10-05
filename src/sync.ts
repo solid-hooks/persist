@@ -1,4 +1,4 @@
-import { DEV } from 'solid-js'
+import { isDev } from 'solid-js/web'
 
 export type PersistenceSyncData = {
   key: string
@@ -54,7 +54,7 @@ export function wsSync(ws: WebSocket, warnOnError?: boolean): PersistenceSyncAPI
             subscriber(data)
           }
         } catch (e) {
-          DEV && warnOnError && console.warn(e)
+          isDev && warnOnError && console.warn(e)
         }
       }),
     (key, newValue) =>

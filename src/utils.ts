@@ -1,9 +1,9 @@
 import type { Promisable } from '@subframe7536/type-utils'
-import { DEV } from 'solid-js'
-import type { AnyStorage } from './types'
 import type { PersistenceSyncAPI } from './sync'
+import type { AnyStorage } from './types'
+import { isDev } from 'solid-js/web'
 
-export function maybePromise<T>(maybePromise: Promisable<T>, cb: (data: T) => void) {
+export function maybePromise<T>(maybePromise: Promisable<T>, cb: (data: T) => void): void {
   maybePromise instanceof Promise ? maybePromise.then(cb) : cb(maybePromise)
 }
 
@@ -18,7 +18,7 @@ export function createSetterWithInit(
   sync?: PersistenceSyncAPI,
 ) {
   let unchanged = 1
-  const readStorage = (onRead: (data: string | null) => void) => maybePromise(
+  const readStorage = (onRead: (data: string | null) => void): void => maybePromise(
     storage.getItem(key),
     data => onRead(data),
   )
@@ -43,7 +43,7 @@ export function createSetterWithInit(
   return () => readStorage((old) => {
     const serialized = serializeState()
 
-    DEV && console.debug(serialized)
+    isDev && console.debug(serialized)
     if (old !== serialized) {
       sync?.[1](key, serialized)
       maybePromise(

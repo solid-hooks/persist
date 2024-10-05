@@ -1,9 +1,9 @@
-import { type Path, pathGet, pathSet } from 'object-path-access'
-import type { createStore } from 'solid-js/store'
-import { reconcile, unwrap } from 'solid-js/store'
-import { type createSignal, untrack } from 'solid-js'
 import type { MakePropRequired } from '@subframe7536/type-utils'
+import type { createStore } from 'solid-js/store'
 import type { PersistSignalOptions, PersistStoreOptions } from './types'
+import { type Path, pathGet, pathSet } from 'object-path-access'
+import { type createSignal, untrack } from 'solid-js'
+import { reconcile, unwrap } from 'solid-js/store'
 import { createSetterWithInit } from './utils'
 
 /**
@@ -44,10 +44,9 @@ export function usePersist<T extends object, Paths extends Path<T>[]>(
   val: any,
   key: string,
   options: PersistStoreOptions<T, Paths> = {},
-) {
-  return typeof val[0] === 'object'
-    ? usePersistStore(val, key, options)
-    : usePersistSignal(val, key, options)
+): ReturnType<typeof createSignal<T>> | ReturnType<typeof createStore<T>> {
+  // @ts-expect-error init
+  return (typeof val[0] === 'object' ? usePersistStore : usePersistSignal)(val, key, options)
 }
 
 function setDefaultOptions<T extends object, Paths extends Path<T>[]>(
@@ -56,7 +55,9 @@ function setDefaultOptions<T extends object, Paths extends Path<T>[]>(
 function setDefaultOptions<T>(
   options: PersistSignalOptions<T>,
 ): MakePropRequired<PersistSignalOptions<any>, 'serializer' | 'storage'>
-function setDefaultOptions(options: PersistStoreOptions<any> | PersistSignalOptions<any>) {
+function setDefaultOptions(
+  options: PersistStoreOptions<any> | PersistSignalOptions<any>,
+): MakePropRequired<PersistStoreOptions<any> | PersistSignalOptions<any>, 'storage' | 'serializer'> {
   return {
     ...options,
     storage: options.storage || localStorage,
@@ -75,7 +76,7 @@ export function usePersistStore<T extends object, Paths extends Path<T>[]>(
   const [state, setState] = val
   const { paths, serializer: { read, write }, storage, sync } = setDefaultOptions(options)
 
-  const serializeState = () => {
+  const serializeState = (): string => {
     const currentState = unwrap(state)
 
     // if no path specified, just serialize the total state
@@ -91,7 +92,7 @@ export function usePersistStore<T extends object, Paths extends Path<T>[]>(
     return write(obj)
   }
 
-  const updateState = (value: string) => setState(
+  const updateState = (value: string): unknown => setState(
     reconcile(Object.assign({}, unwrap(state), read(value)), { merge: true }),
   )
 
@@ -114,8 +115,8 @@ export function usePersistSignal<T>(
   const [state, setState] = val
   const { serializer: { read, write }, storage, sync } = setDefaultOptions(options)
 
-  const serializeState = () => write(untrack(state))
-  const updateState = (value: string) => setState(read(value))
+  const serializeState = (): string => write(untrack(state))
+  const updateState = (value: string): unknown => setState(read(value))
   const setter = createSetterWithInit(serializeState, updateState, storage, key, sync)
 
   return [
