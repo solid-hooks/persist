@@ -3,7 +3,7 @@ import { createStore, del, get, set } from 'idb-keyval'
 
 /**
  * use IndexedDB storage with `idb-keyval`
- * @param name `idb-keyval` CustomStore db name, default to `solid-idb`
+ * @param name custom db name with prefix `persist-`, default to `solid-idb`
  * @example
  * ```ts
  * import { createIdbStorage, usePersist } from '@solid-hooks/persist'
@@ -17,7 +17,7 @@ import { createStore, del, get, set } from 'idb-keyval'
  * ```
  */
 export function createIdbStorage(name = 'solid-idb'): AsyncStorageLike {
-  const customStore = createStore(name, `${name}-store`)
+  const customStore = createStore(name, `persist-${name}`)
   return {
     getItem: key => get(key, customStore) as any,
     setItem: (key, val) => set(key, val, customStore),

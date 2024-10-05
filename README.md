@@ -4,6 +4,13 @@
 
 # @solid-hooks/persist
 
+Persist signal or store to storage.
+
+- Provide separate functions for signal and store
+- Support multiple sync APIs
+- Support partial storage by paths
+- Built-in support for `IndexedDB` (please check out that `idb-keyval` is installed)
+
 ## Install
 
 ```shell
@@ -86,6 +93,8 @@ export type PersistSignalOptions<T> = Pick<PersistStoreOptions<any>, 'storage' |
 ### IndexedDB
 
 use IndexedDB storage with `idb-keyval` (as peerDependencies)
+
+The db name is customizable with prefix `persist-`, default to `solid-idb`
 
 ```ts
 import { createIdbStorage, usePersist } from '@solid-hooks/persist'
